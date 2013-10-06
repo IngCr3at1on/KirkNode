@@ -4,7 +4,6 @@ passport = require 'passport'
 LocalStrategy = require('passport-local').Strategy
 
 io = require 'socket.io'
-routes = require './routes'
 net = require 'net'
 
 app = express()
@@ -43,13 +42,16 @@ passport.deserializeUser (id, done) ->
 
 passport.use new LocalStrategy(login)
 
-app.get '/', ensureAuthentication, routes.index
-app.get '/login', routes.login
+#app.get '/', ensureAuthentication, routes.index
+#app.get '/login' ->
+    # I believe this should send the login request but I'm a bit lost as the
+    # client should handle sending that. So, failure lol
+
 app.get '/logout', (req, res) ->
     req.logout()
-    res.redirect '/login'
 
-app.post '/login', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login' })
+# course this would make more sense as far as sending login requests go...
+app.post '/login', passport.authenticate('local', { successRedirect: '/failedRedirect', failureRedirect: '/login' })
 
 server = net.createServer app
 server.listen app.get('port'), ->
