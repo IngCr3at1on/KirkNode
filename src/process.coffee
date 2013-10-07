@@ -1,3 +1,10 @@
+#
+# Process an action (parsed from a json object).
+#
+# The variable 'client' will always refer to the originating client.
+# 'json' will be the json object containing the action to be processed.
+#
+
 # Parse a json file for an action
 parse: (client, json) ->
     # Check a json file for an action and switch on it if it's present.
