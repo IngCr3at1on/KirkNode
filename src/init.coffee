@@ -21,8 +21,9 @@ server = net.createServer (client) ->
 		console.log 'client disconnected'
 	
 	client.on 'data', (json) ->
-	    process.parse client, json
-		console.log json.toString()
+		if json
+			process.parse client, json
+			console.log json.toString()
 
 server.listen PORT, ->
   console.log 'server bound on port '+PORT
