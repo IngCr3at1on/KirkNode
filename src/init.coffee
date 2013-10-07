@@ -1,4 +1,5 @@
 net = require 'net'
+process = require './process'
 
 server = net.createServer (client) ->
 	console.log 'client connected'
@@ -8,8 +9,11 @@ server = net.createServer (client) ->
 		console.log 'client disconnected'
 	
 	client.on 'data', (json) ->
-		client.write json
+	    process.parse client, json
 		console.log json.toString()
 
-server.listen 8124, ->
+# TODO
+#   Add port range.
+#
+server.listen 4004, ->
   console.log 'server bound'
