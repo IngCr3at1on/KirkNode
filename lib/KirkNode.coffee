@@ -1,3 +1,6 @@
+#
+# Handle client login/logout and process received messages (json objects).
+#
 process = require './process'
 
 KirkNode = {

@@ -30,7 +30,14 @@ authenticate = (origin, json) ->
 join = (origin, json) ->
 	# Check the json file for a 'room' field for what channel to join.
 	if json.room and typeof json.room is 'string'
-		origin.write '{"response": 100, "alert": "Multi-user messaging is not enabled at this time."}'
+		# Confirm the Channel title includes a '#' character and error if not.
+		if json.room.charAt(0) is not '#'
+			origin.write '{"response": 400, "error": "Channel/room title must be prefixed with '#'"}'
+
+		# Otherwise go ahead and process our join command
+		else
+			# Disabled ATM
+			origin.write '{"response": 100, "alert": "Multi-user messaging is not enabled at this time."}'
 
 	# If no 'room' field is given (or if our 'room' field is not a string)
 	# return bad json.
@@ -40,7 +47,14 @@ join = (origin, json) ->
 leave = (origin, json) ->
 	# Check the json file for a 'room' field for what channel to leave.
 	if json.room and typeof json.room is 'string'
-		origin.write '{"response": 100, "alert": "Multi-user messaging is not enabled at this time."}'
+		# Confirm the Channel title includes a '#' character and error if not.
+		if json.room.charAt(0) is not '#'
+			origin.write '{"response": 400, "error": "Channel/room title must be prefixed with '#'"}'
+
+		# Otherwise go ahead and process our join command
+		else
+			# Disabled ATM
+			origin.write '{"response": 100, "alert": "Multi-user messaging is not enabled at this time."}'
 
 	# If no 'room' field is given (or if our 'room' field is not a string)
 	# return bad json.
@@ -50,7 +64,14 @@ leave = (origin, json) ->
 message = (origin, json) ->
 	# Check the json file for a 'to' field for message delivery.
 	if json.to and typeof json.to is 'string'
-		origin.write '{"response": 100, "alert": "Messaging is not enabled at this time."}'
+		# Check if we are sending a message to a channel/room
+		if json.room.charAt(0) is '#'
+			# Disabled
+			origin.write '{"response": 100, "alert": "Multi-user messaging is not enabled at this time."}'
+
+		else
+			# Disabled
+			origin.write '{"response": 100, "alert": "Messaging is not enabled at this time."}'
 
 	# If no 'to' field is given (or if our 'to' field is not a string)
 	# return bad json.
