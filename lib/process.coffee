@@ -17,41 +17,41 @@ parse: (origin, json) ->
             when 'part' then leave origin, json
             when 'msg' then message origin, json
             # Invalid action, return bad request.
-            else origin.write "{response: 400, error: 'Bad request.'}"
+            else origin.write '{"response": 400, "error": "Bad request."}'
 
     # Otherwise there is no action, return bad json.
-    else origin.write "{response: 400, error: 'Bad json object.'}"
+    else origin.write '{"response": 400, "error": "Bad json object."}'
 
 # Authenticate a user on the server.
 authenticate: (origin, json) ->
-    origin.write "{response: 100, alert: 'Authentication is not enabled at this time.'}"
+    origin.write '{"response": 100, "alert": "Authentication is not enabled at this time."}'
 
 # Log a user into a channel.
 join: (origin, json) ->
     # Check the json file for a 'room' field for what channel to join.
     if json.room and typeof json.room is 'string'
-        origin.write "{response: 100, alert: 'Multi-user messaging is not enabled at this time.'}"
+        origin.write '{"response": 100, "alert": "Multi-user messaging is not enabled at this time."}'
 
     # If no 'room' field is given (or if our 'room' field is not a string)
     # return bad json.
-    else origin write "{response: 400, error: 'Bad or missing room name.'}"
+    else origin write '{"response": 400, "error": "Bad or missing room name."}'
 
 # Log a user out of a channel.
 leave: (origin, json) ->
     # Check the json file for a 'room' field for what channel to leave.
     if json.room and typeof json.room is 'string'
-        origin.write "{response: 100, alert: 'Multi-user messaging is not enabled at this time.'}"
+        origin.write '{"response": 100, "alert": "Multi-user messaging is not enabled at this time."}'
 
     # If no 'room' field is given (or if our 'room' field is not a string)
     # return bad json.
-    else origin write "{response: 400, error: 'Bad or missing room name.'}"
+    else origin write '{"response": 400, "error": "Bad or missing room name."}'
 
 # Message a user or group (that the user/client is logged into)
 message: (origin, json) ->
     # Check the json file for a 'to' field for message delivery.
     if json.to and typeof json.to is 'string'
-        origin.write "{response: 100, alert: 'Messaging is not enabled at this time.'}"
+        origin.write '{"response": 100, "alert": "Messaging is not enabled at this time."}'
 
     # If no 'to' field is given (or if our 'to' field is not a string)
     # return bad json.
-    else origin.write "{response: 400, error: 'Bad or missing recipient.'}"
+    else origin.write '{"response": 400, "error": "Bad or missing recipient."}'

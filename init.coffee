@@ -9,13 +9,13 @@
 #
 
 net = require 'net'
-process = require './process'
+process = require './lib/process'
 
 PORT = 4004
 
 server = net.createServer (client) ->
 	console.log 'client connected'
-	client.write "{response: 200}"
+	client.write '{"response": 200}'
 
 	client.on 'end', ->
 		console.log 'client disconnected'
