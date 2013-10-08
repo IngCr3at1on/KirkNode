@@ -9,7 +9,7 @@
 #
 
 net = require 'net'
-process = require './lib/process'
+KirkNode = require './lib/KirkNode'
 
 PORT = 4004
 
@@ -17,13 +17,7 @@ server = net.createServer (client) ->
 	console.log 'client connected'
 	client.write '{"response": 200}'
 
-	client.on 'end', ->
-		console.log 'client disconnected'
-	
-	client.on 'data', (json) ->
-		if json
-			process.parse client, json
-			console.log json.toString()
+	KirkNode.init client
 
 server.listen PORT, ->
   console.log 'server bound on port '+PORT
