@@ -1,4 +1,3 @@
-To get started running the JIM server run these commands after cloning:
+To get started running the JIM server run following after cloning:
 
-	npm install
 	npm start
