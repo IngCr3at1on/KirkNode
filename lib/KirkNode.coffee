@@ -10,7 +10,7 @@ KirkNode = {
 			console.log 'client disconnected'
 
 		client.on 'data', (json) ->
-			if json and typeof json is 'object'
+			if json and typeof json is 'object' and json is not ''
 				console.log 'client: ' + json.toString()
 				process.review client, json
 
