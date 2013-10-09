@@ -11,7 +11,7 @@ KirkNode = {
 
 		client.on 'data', (json) ->
 			if json
-				console.log json.toString()
+				console.log 'client: ' + json.toString()
 				process.parse client, json
 
 }
