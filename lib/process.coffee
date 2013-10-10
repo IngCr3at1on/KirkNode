@@ -14,7 +14,7 @@ process = {
 		# parse our json object into something we can grab variables from
 		# directly (unfortunately this will cause the server to crash if the
 		# json file is malformed).
-		obj =  eval('(' + json + ')')
+		obj =  JSON.parse(json)
 		action = obj.action
 		
 		if action and typeof action is 'string'
@@ -40,7 +40,7 @@ process = {
 	#
 	# Authenticate a user on the server.
 	#
-	authenticate: (origin, json) ->
+	authenticate: (origin, obj) ->
 		ret = '{"response": 100, "alert": "Authentication is not enabled at this time."}'
 		console.log 'server: ' + ret
 		origin.write ret
@@ -48,11 +48,11 @@ process = {
 	#
 	# Log a user into a channel.
 	#
-	join: (origin, json) ->
-		# Check the json file for a 'room' field for what channel to join.
-		if json.room and typeof json.room is 'string'
+	join: (origin, obj) ->
+		# Check the obj file for a 'room' field for what channel to join.
+		if obj.room and typeof obj.room is 'string'
 			# Confirm the Channel title includes a '#' character and error if not.
-			if json.room.charAt(0) is not '#'
+			if obj.room.charAt(0) is not '#'
 				ret = '{"response": 400, "error": "Channel/room title must be prefixed with '#'"}'
 				console.log 'server: ' + ret
 				origin.write ret
@@ -74,11 +74,11 @@ process = {
 	#
 	# Log a user out of a channel.
 	#
-	leave: (origin, json) ->
-		# Check the json file for a 'room' field for what channel to leave.
-		if json.room and typeof json.room is 'string'
+	leave: (origin, obj) ->
+		# Check the obj file for a 'room' field for what channel to leave.
+		if json.room and typeof obj.room is 'string'
 			# Confirm the Channel title includes a '#' character and error if not.
-			if json.room.charAt(0) is not '#'
+			if obj.room.charAt(0) is not '#'
 				ret = '{"response": 400, "error": "Channel/room title must be prefixed with '#'"}'
 				console.log 'server: ' + ret
 				origin.write ret
@@ -100,9 +100,9 @@ process = {
 	#
 	# Message a user or group (that the user/client is logged into)
 	#
-	message: (origin, json) ->
-		# Check the json file for a 'to' field for message delivery.
-		if json.to and typeof json.to is 'string'
+	message: (origin, obj) ->
+		# Check the obj file for a 'to' field for message delivery.
+		if obj.to and typeof obj.to is 'string'
 			# Check if we are sending a message to a channel/room
 			if json.to.charAt(0) is '#'
 				# Disabled
