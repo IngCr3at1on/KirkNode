@@ -3,6 +3,9 @@
 #
 process = require './process'
 
+obj = undefined
+i =  0
+
 KirkNode = {
 	init: (client) ->
 
@@ -15,25 +18,15 @@ KirkNode = {
 					console.log 'client: ' + json.toString()
 					process.review client, json
 
-				# So the problem here is obj is always undefined as it's lost
-				# with each new line, I tried defining object earlier and it
-				# caused some errors.
-				#
-				# I'm not sure how this is going to work without first tracking
-				# a difference between clients otherwise messages might get
-				# mixed up by the socket.
 				else if !obj
 					obj = json
 
 				else
 					obj = obj + json
 
-					if KirkNode.isValidJson json
+					if KirkNode.isValidJson obj
 						console.log 'client: ' + obj.toString()
 						process.review client, obj
-
-					else if !i
-						i = 0
 
 					# 10 is an arbitrary number and needs to be replaced after
 					# we define a more appropriate max object size.
@@ -42,7 +35,7 @@ KirkNode = {
 						# so return bad json
 						ret = '{"response": 400, "error": "Bad json object."}'
 						console.log 'server: ' + ret
-						origin.write ret
+						client.write ret
 						obj = undefined
 						i = 0
 
