@@ -12,26 +12,27 @@ process = {
 	#
 	review: (origin, json) ->
 		# parse our json object into something we can grab variables from
-		# directly (unfortunately this will cause the server to crash if the
-		# json file is malformed).
-		obj =  JSON.parse(json)
-		action = obj.action
+		# directly
+		if json is JSON
+			obj =  JSON.parse(json)
+			action = obj.action
 		
-		if action and typeof action is 'string'
-			switch action
-				# check against each defined action.
-				when 'authenticate' then process.authenticate origin, obj
-				when 'join' then process.join origin, obj
-				when 'leave' then process.leave origin, obj
-				when 'part' then process.leave origin, obj
-				when 'msg' then process.message origin, obj
-				# Invalid action, return bad request.
-				else
-					ret = '{"response": 400, "error": "Bad request."}'
-					console.log 'server: ' + ret
-					origin.write ret
+			if action and typeof action is 'string'
+				switch action
+					# check against each defined action.
+					when 'authenticate' then process.authenticate origin, obj
+					when 'join' then process.join origin, obj
+					when 'leave' then process.leave origin, obj
+					when 'part' then process.leave origin, obj
+					when 'msg' then process.message origin, obj
+					# Invalid action, return bad request.
+					else
+						ret = '{"response": 400, "error": "Bad request."}'
+						console.log 'server: ' + ret
+						origin.write ret
 
-		# Otherwise there is no action, return bad json.
+		# Otherwise there is no action or the JSON object is malformed,
+		# return bad json.
 		else
 			ret = '{"response": 400, "error": "Bad json object."}'
 			console.log 'server: ' + ret
