@@ -13,8 +13,7 @@ process = {
 	review: (origin, json) ->
 		# parse our json object into something we can grab variables from
 		# directly
-		if json is JSON
-			obj =  JSON.parse(json)
+		if obj = JSON.parse(json)
 			action = obj.action
 		
 			if action and typeof action is 'string'
