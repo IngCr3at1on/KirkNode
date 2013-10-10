@@ -1,4 +1,4 @@
-KirkNode is a node.js server to implify and test the [JIM protocol](https://jim.hackpad.com)
+KirkNode is a node.js server to implement and test the [JIM protocol](https://jim.hackpad.com)
 
 Written in coffeescript, the original joke was to name it "node.JIM"; being
 boring that was replaced with KirkNode
