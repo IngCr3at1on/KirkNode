@@ -8,7 +8,7 @@
 
 clients = require './clients'
 
-process = {
+jimHandler = {
 	#
 	# Review / parse a json file for an action
 	#
@@ -21,12 +21,12 @@ process = {
 			if action and typeof action is 'string'
 				switch action
 					# check against each defined action.
-					when 'authenticate' then process.authenticate client, obj
-					when 'join' then process.join client, obj
-					when 'leave' then process.leave client, obj
-					when 'part' then process.leave client, obj
-					when 'msg' then process.message client, obj
-					when 'quit' then process.quit client
+					when 'authenticate' then jimHandler.authenticate client, obj
+					when 'join' then jimHandler.join client, obj
+					when 'leave' then jimHandler.leave client, obj
+					when 'part' then jimHandler.leave client, obj
+					when 'msg' then jimHandler.message client, obj
+					when 'quit' then jimHandler.quit client
 					# Invalid action, return bad request.
 					else
 						ret = '{"response": 400, "error": "Bad request."}'
@@ -133,4 +133,4 @@ process = {
 		client.stream.end()
 }
 
-module.exports = process
+module.exports = jimHandler

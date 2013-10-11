@@ -2,7 +2,7 @@
 # Handle client login/logout and process received messages (json objects).
 #
 clients = require './clients'
-process = require './process'
+jimHandler = require './jimHandler'
 
 # Add multiline messages to an object until we have a valid json, store here
 # in the interim.
@@ -79,7 +79,7 @@ KirkNode = {
 
 	ReviewJson: (client, json) ->
 		console.log client.name + ': ' + json.toString()
-		process.review client, json
+		jimHandler.review client, json
 }
 
 module.exports = KirkNode
