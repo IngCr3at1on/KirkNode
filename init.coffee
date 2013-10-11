@@ -13,11 +13,8 @@ KirkNode = require './lib/KirkNode'
 
 PORT = 4004
 
-server = net.createServer (client) ->
-	console.log 'client connected'
-	client.write '{"response": 200}'
-
-	KirkNode.init client
+server = net.createServer (stream) ->
+	KirkNode.init stream
 
 server.listen PORT, ->
   console.log 'server bound on port '+PORT

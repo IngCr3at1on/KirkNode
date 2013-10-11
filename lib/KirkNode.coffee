@@ -1,7 +1,9 @@
 #
 # Handle client login/logout and process received messages (json objects).
 #
+clients = require './clients'
 process = require './process'
+tools = require './tools'
 
 # Add multiline messages to an object until we have a valid json, store here
 # in the interim.
@@ -14,13 +16,31 @@ i =  0
 # means we need to be checking 12 lines at a time for objects (14 to be safe)
 JSONLIMIT = 14
 
+class Client
+	constructor: (stream) ->
+		@stream = stream
+		@name = null
+
+Array.prototype.remove = (element) ->
+	for e, i in this when e is element
+		return this.splice(i, 1)
+
 KirkNode = {
-	init: (client) ->
+	init: (stream) ->
+		client = new Client(stream)
+		clients.list.push client
 
-		client.on 'end', ->
-			console.log 'client disconnected'
+		user = 'guest' + clients.list.length
+		client.name = user
+		console.log client.name + ' connected'
 
-		client.on 'data', (json) ->
+		stream.write '{"response": 200}'
+
+		stream.on 'end', ->
+			clients.list.remove client
+			console.log client.name + ' disconnected'
+
+		stream.on 'data', (json) ->
 			if json and typeof json is 'object'
 				if KirkNode.isValidJson json
 					KirkNode.ReviewJson client, json
@@ -39,7 +59,7 @@ KirkNode = {
 						# so return bad json
 						ret = '{"response": 400, "error": "Bad json object."}'
 						console.log 'server: ' + ret
-						client.write ret
+						client.stream.write ret
 						obj = undefined
 						i = 0
 
@@ -53,7 +73,7 @@ KirkNode = {
 			return false
 
 	ReviewJson: (client, json) ->
-		console.log 'client: ' + json.toString()
+		console.log client.name + ': ' + json.toString()
 		process.review client, json
 }
 
