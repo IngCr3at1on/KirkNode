@@ -4,13 +4,6 @@
 clients = require './clients'
 jimHandler = require './jimHandler'
 
-# Add multiline messages to an object until we have a valid json, store here
-# in the interim.
-obj = undefined
-
-# Count to JSONLIMIT and error if we haven't gotten a valid json object by then
-i =  0
-
 # 500 characters is less then 7 lines at 80 characters per line.
 # Assuming the opening bracket comes in on 1 line, then each entry pair on the
 # following lines a single line message could be delivered in 6 lines, which
@@ -20,6 +13,8 @@ JSONLIMIT = 14
 class Client
 	constructor: (stream) ->
 		@stream = stream
+		@obj = undefined
+		@i = 0
 		@name = null
 
 Array.prototype.remove = (element) ->
@@ -50,25 +45,27 @@ KirkNode =
 				if KirkNode.isValidJson json
 					KirkNode.ReviewJson client, json
 
-				else if !obj
-					obj = json
+				else if !client.obj
+					client.obj = json
 
 				else
-					obj = obj + json
+					client.obj = client.obj + json
 
-					if KirkNode.isValidJson obj
-						KirkNode.ReviewJson client, obj
+					if KirkNode.isValidJson client.obj
+						KirkNode.ReviewJson client, client.obj
+						client.obj = undefined
+						client.i = 0
 
-					else if i is JSONLIMIT
+					else if client.i is JSONLIMIT
 						# We've passed the max line size for a JIM JSON object
 						# so return bad json
 						ret = '{"response": 400, "error": "Bad json object."}'
 						console.log 'server: ' + ret
 						client.stream.write ret
 						obj = undefined
-						i = 0
+						client.i = 0
 
-					else i++
+					else client.i++
 
 	isValidJson: (json) ->
 		try
