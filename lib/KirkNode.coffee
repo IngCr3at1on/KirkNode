@@ -26,7 +26,7 @@ Array.prototype.remove = (element) ->
 	for e, i in this when e is element
 		return this.splice(i, 1)
 
-KirkNode = {
+KirkNode =
 	init: (stream) ->
 		client = new Client(stream)
 		clients.list.push client
@@ -80,6 +80,5 @@ KirkNode = {
 	ReviewJson: (client, json) ->
 		console.log client.name + ': ' + json.toString()
 		jimHandler.review client, json
-}
 
 module.exports = KirkNode

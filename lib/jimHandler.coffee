@@ -8,7 +8,7 @@
 
 clients = require './clients'
 
-jimHandler = {
+jimHandler =
 	#
 	# Review / parse a json file for an action
 	#
@@ -131,6 +131,5 @@ jimHandler = {
 	#
 	quit: (client) ->
 		client.stream.end()
-}
 
 module.exports = jimHandler
