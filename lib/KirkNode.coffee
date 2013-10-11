@@ -7,8 +7,10 @@ process = require './process'
 # Add multiline messages to an object until we have a valid json, store here
 # in the interim.
 obj = undefined
+
 # Count to JSONLIMIT and error if we haven't gotten a valid json object by then
 i =  0
+
 # 500 characters is less then 7 lines at 80 characters per line.
 # Assuming the opening bracket comes in on 1 line, then each entry pair on the
 # following lines a single line message could be delivered in 6 lines, which
@@ -30,6 +32,10 @@ KirkNode = {
 		clients.list.push client
 
 		user = 'guest' + clients.list.length
+		for c in clients.list
+			if c.name is user
+				user = 'guest0' + clients.list.length
+
 		client.name = user
 		console.log client.name + ' connected'
 
