@@ -8,11 +8,6 @@
 
 clients = require './clients'
 
-class Client
-	constructor: (stream) ->
-		@stream = stream
-		@name = null
-
 process = {
 	#
 	# Review / parse a json file for an action
