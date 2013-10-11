@@ -4,6 +4,7 @@ Written in coffeescript, the original joke was to name it "node.JIM"; being
 boring that was replaced with KirkNode
 
 Requirements:
+
 	npm
 	coffee-script (should be installed via npm)
 
