@@ -3,7 +3,6 @@
 #
 clients = require './clients'
 process = require './process'
-tools = require './tools'
 
 # Add multiline messages to an object until we have a valid json, store here
 # in the interim.
