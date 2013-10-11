@@ -107,7 +107,7 @@ jimHandler =
 		# Check the obj file for a 'to' field for message delivery.
 		if obj.to and typeof obj.to is 'string'
 			# Check if we are sending a message to a channel/room
-			if json.to.charAt(0) is '#'
+			if obj.to.charAt(0) is '#'
 				# Disabled
 				ret = '{"response": 100, "alert": "Multi-user messaging is not enabled at this time."}'
 				console.log 'server: ' + ret
