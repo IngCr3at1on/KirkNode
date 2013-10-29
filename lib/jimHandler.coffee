@@ -63,7 +63,7 @@ jimHandler =
 
 			# Otherwise go ahead and process our join command
 			else
-				client.subscribe(obj.room)
+				client.reg.subscribe(obj.room)
 				ret = '{"response": 200}'
 				console.log 'server: ' + ret
 				client.stream.write ret
@@ -89,7 +89,7 @@ jimHandler =
 
 			# Otherwise go ahead and process our join command
 			else
-				client.unsubscribe(obj.room)
+				client.reg.unsubscribe(obj.room)
 				ret = '{"response": 200}'
 				console.log 'server: ' + ret
 				client.stream.write ret

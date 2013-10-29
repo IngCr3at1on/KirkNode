@@ -28,8 +28,11 @@ KirkNode =
 		client = new Client(stream)
 		clients.list.push client
 
-		client.reg = redis.createClient()
-		client.reg.subscribe("GLOBAL")
+		# Register our client with the redis server and add it to the GLOBAL
+		# channel.
+		if client.reg is null
+			client.reg = redis.createClient()
+			client.reg.subscribe 'GLOBAL'
 
 		user = 'guest' + clients.list.length
 		for c in clients.list
@@ -42,6 +45,7 @@ KirkNode =
 		stream.write '{"response": 200}'
 
 		stream.on 'end', ->
+			client.reg.quit()
 			clients.list.remove client
 			console.log client.name + ' disconnected'
 
