@@ -7,7 +7,7 @@ Requirements:
 
 	npm
 	coffee-script (should be installed via npm)
-	redis, needs to be installed and running [Redis Quick Start](http://redis.io/topics/quickstart)
+	redis, needs to be installed and running, http://redis.io/topics/quickstart
 
 To get started with KirkNode run the following after cloning:
 
