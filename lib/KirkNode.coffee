@@ -1,9 +1,8 @@
 #
 # Handle client login/logout and process received messages (json objects).
 #
-clients = require './clients'
+clientHander = require './clientHandler'
 jimHandler = require './jimHandler'
-redis = require 'redis'
 
 # 500 characters is less then 7 lines at 80 characters per line.
 # Assuming the opening bracket comes in on 1 line, then each entry pair on the
@@ -17,7 +16,7 @@ class Client
 		@obj = undefined
 		@i = 0
 		@name = null
-		@reg = null
+		@chans = null
 
 Array.prototype.remove = (element) ->
 	for e, i in this when e is element
@@ -26,17 +25,12 @@ Array.prototype.remove = (element) ->
 KirkNode =
 	init: (stream) ->
 		client = new Client(stream)
-		clients.list.push client
+		clientHandler.clientlist.push client
 
-		# Register our client with the redis server and add it to the GLOBAL
-		# channel.
-		if client.reg is null
-			client.reg = redis.createClient()
-
-		user = 'guest' + clients.list.length
-		for c in clients.list
+		user = 'guest' + clientHandler.clientlist.length
+		for c in clientHandler.clientlist
 			if c.name is user
-				user = 'guest0' + clients.list.length
+				user = 'guest0' + clientHandler.clientlist.length
 
 		client.name = user
 		console.log client.name + ' connected'
@@ -44,8 +38,9 @@ KirkNode =
 		stream.write '{"response": 200}'
 
 		stream.on 'end', ->
-			client.reg.quit()
-			clients.list.remove client
+			for c in client.chans
+				clientHandler.partchan c
+
 			console.log client.name + ' disconnected'
 
 		stream.on 'data', (json) ->

@@ -7,7 +7,6 @@
     "start": "coffee init.coffee"
   },
   "dependencies": {
-    "coffee-script": "*",
-    "redis": "*"
+    "coffee-script": "*"
   }
 }

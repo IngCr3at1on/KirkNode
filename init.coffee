@@ -7,7 +7,6 @@
 #   Add port range.
 #   Add IP check and black list.
 #
-
 net = require 'net'
 KirkNode = require './lib/KirkNode'
 

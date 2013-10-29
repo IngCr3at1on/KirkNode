@@ -5,9 +5,7 @@
 # 'json' will be the json object containing the action to be processed.
 # 'obj' is a converted json object which we can grab our key-pairs from.
 #
-
-clients = require './clients'
-#redis = require 'redis'
+clientHander = require './clientHandler'
 
 jimHandler =
 	#
@@ -63,10 +61,7 @@ jimHandler =
 
 			# Otherwise go ahead and process our join command
 			else
-				client.reg.subscribe(obj.room)
-				ret = '{"response": 200}'
-				console.log 'server: ' + ret
-				client.stream.write ret
+				clientHandler.joinchan client, obj.room
 
 		# If no 'room' field is given (or if our 'room' field is not a string)
 		# return bad json.
@@ -87,9 +82,9 @@ jimHandler =
 				console.log 'server: ' + ret
 				client.stream.write ret
 
-			# Otherwise go ahead and process our join command
+			# Otherwise go ahead and process our part command
 			else
-				client.reg.unsubscribe(obj.room)
+				clientHandler.partchan client obj.room
 				ret = '{"response": 200}'
 				console.log 'server: ' + ret
 				client.stream.write ret
@@ -109,14 +104,14 @@ jimHandler =
 		if obj.to and typeof obj.to is 'string'
 			# Check if we are sending a message to a channel/room
 			if obj.to.charAt(0) is '#'
-				# Disabled
-				ret = '{"response": 100, "alert": "Multi-user messaging is not enabled at this time."}'
+				#client.regp.publish obj.to, obj
+				ret = '{"response": 200, "alert": "Multi-user message published."}'
 				console.log 'server: ' + ret
 				client.stream.write ret
 
 			else
 				# Disabled
-				ret = '{"response": 100, "alert": "Messaging is not enabled at this time."}'
+				ret = '{"response": 100, "alert": "Single-user messaging is not enabled at this time."}'
 				console.log 'server: ' + ret
 				client.stream.write ret
 
