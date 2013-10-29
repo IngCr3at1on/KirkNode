@@ -32,7 +32,6 @@ KirkNode =
 		# channel.
 		if client.reg is null
 			client.reg = redis.createClient()
-			client.reg.subscribe 'GLOBAL'
 
 		user = 'guest' + clients.list.length
 		for c in clients.list
