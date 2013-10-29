@@ -7,6 +7,7 @@
 #
 
 clients = require './clients'
+#redis = require 'redis'
 
 jimHandler =
 	#
@@ -62,8 +63,8 @@ jimHandler =
 
 			# Otherwise go ahead and process our join command
 			else
-				# Disabled ATM
-				ret = '{"response": 100, "alert": "Multi-user messaging is not enabled at this time."}'
+				client.subscribe(obj.room)
+				ret = '{"response": 200}'
 				console.log 'server: ' + ret
 				client.stream.write ret
 
@@ -88,8 +89,8 @@ jimHandler =
 
 			# Otherwise go ahead and process our join command
 			else
-				# Disabled ATM
-				ret = '{"response": 100, "alert": "Multi-user messaging is not enabled at this time."}'
+				client.unsubscribe(obj.room)
+				ret = '{"response": 200}'
 				console.log 'server: ' + ret
 				client.stream.write ret
 

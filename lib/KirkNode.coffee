@@ -3,6 +3,7 @@
 #
 clients = require './clients'
 jimHandler = require './jimHandler'
+redis = require 'redis'
 
 # 500 characters is less then 7 lines at 80 characters per line.
 # Assuming the opening bracket comes in on 1 line, then each entry pair on the
@@ -16,6 +17,7 @@ class Client
 		@obj = undefined
 		@i = 0
 		@name = null
+		@reg = null
 
 Array.prototype.remove = (element) ->
 	for e, i in this when e is element
@@ -25,6 +27,9 @@ KirkNode =
 	init: (stream) ->
 		client = new Client(stream)
 		clients.list.push client
+
+		client.reg = redis.createClient()
+		client.reg.subscribe("GLOBAL")
 
 		user = 'guest' + clients.list.length
 		for c in clients.list
