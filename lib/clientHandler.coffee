@@ -63,4 +63,22 @@ clientHandler=
 		console.log 'server: ' + ret
 		client.stream.write ret
 
+	# Handle a room message relaying it to all members of the room.
+	handleroommsg: (client, room, json) ->
+		# If the destination channel doesn't exist return 404 : Not Found.
+		if !chanlist[room]
+			ret = '{"response": 404}'
+			console.log 'server: '+ ret
+			client.stream.write ret
+			return
+
+		# Otherwise pass the original json object (unmodified) to each member.
+		for m in chanlist[room].members
+			m.stream.write json
+
+		# Return success to the sending client.
+		ret = '{"response": 200, "alert": "Multi-user message published."}'
+		console.log 'server: ' + ret
+		client.stream.write ret
+
 module.exports = clientHandler

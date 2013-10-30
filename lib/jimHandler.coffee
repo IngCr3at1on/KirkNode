@@ -26,7 +26,7 @@ jimHandler =
 					when 'join' then jimHandler.join client, obj
 					when 'leave' then jimHandler.leave client, obj
 					when 'part' then jimHandler.leave client, obj
-					when 'msg' then jimHandler.message client, obj
+					when 'msg' then jimHandler.message client, obj, json
 					when 'quit' then jimHandler.quit client
 					# Invalid action, return bad request.
 					else
@@ -98,15 +98,12 @@ jimHandler =
 	#
 	# Message a user or group (that the user/client is logged into)
 	#
-	message: (client, obj) ->
+	message: (client, obj, json) ->
 		# Check the obj file for a 'to' field for message delivery.
 		if obj.to and typeof obj.to is 'string'
 			# Check if we are sending a message to a channel/room
 			if obj.to.charAt(0) is '#'
-				#client.regp.publish obj.to, obj
-				ret = '{"response": 200, "alert": "Multi-user message published."}'
-				console.log 'server: ' + ret
-				client.stream.write ret
+				clientHandler.handleroommsg client, obj.to, json
 
 			else
 				# Disabled
