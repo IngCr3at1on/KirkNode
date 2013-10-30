@@ -5,7 +5,7 @@
 # 'json' will be the json object containing the action to be processed.
 # 'obj' is a converted json object which we can grab our key-pairs from.
 #
-clientHander = require './clientHandler'
+clientHandler = require './clientHandler'
 
 jimHandler =
 	#
@@ -15,9 +15,11 @@ jimHandler =
 		# parse our json object into something we can grab variables from
 		# directly
 		if obj = JSON.parse(json)
+			# Grab the action from our JSON object.
 			action = obj.action
-		
+			# Confirm the action is valid before processing it.
 			if action and typeof action is 'string'
+				# If the action is valid run through the possible actions.
 				switch action
 					# check against each defined action.
 					when 'authenticate' then jimHandler.authenticate client, obj
@@ -75,7 +77,7 @@ jimHandler =
 	#
 	leave: (client, obj) ->
 		# Check the obj file for a 'room' field for what channel to leave.
-		if json.room and typeof obj.room is 'string'
+		if obj.room and typeof obj.room is 'string'
 			# Confirm the Channel title includes a '#' character and error if not.
 			if obj.room.charAt(0) is not '#'
 				ret = '{"response": 400, "error": "Channel/room title must be prefixed with '#'"}'
@@ -84,10 +86,7 @@ jimHandler =
 
 			# Otherwise go ahead and process our part command
 			else
-				clientHandler.partchan client obj.room
-				ret = '{"response": 200}'
-				console.log 'server: ' + ret
-				client.stream.write ret
+				clientHandler.partchan client, obj.room, true
 
 		# If no 'room' field is given (or if our 'room' field is not a string)
 		# return bad json.
