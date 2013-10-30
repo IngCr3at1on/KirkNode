@@ -106,10 +106,7 @@ jimHandler =
 				clientHandler.handleroommsg client, obj.to, json
 
 			else
-				# Disabled
-				ret = '{"response": 100, "alert": "Single-user messaging is not enabled at this time."}'
-				console.log 'server: ' + ret
-				client.stream.write ret
+				clientHandler.handleprivmsg client, obj.to, json
 
 		# If no 'to' field is given (or if our 'to' field is not a string)
 		# return bad json.

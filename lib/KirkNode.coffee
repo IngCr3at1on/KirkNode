@@ -1,6 +1,7 @@
 #
 # Handle client login/logout and process received messages (json objects).
 #
+clients = require './clients'
 clientHandler = require './clientHandler'
 jimHandler = require './jimHandler'
 
@@ -32,11 +33,6 @@ class Client
 		@chans = []
 
 #
-# List all connected clients.
-#
-clientlist = []
-
-#
 # Remove an element from an array, this is also being used in clientHandler,
 # it would be nice to export it from somewhere for both but I'm having issues
 # with this.
@@ -53,15 +49,15 @@ KirkNode =
 	init: (stream) ->
 		# Create a new client and add them to the clients list
 		client = new Client(stream)
-		clientlist.push client
+		clients.list.push client
 
 		# Give each client a guestID on login (changed on authorization).
-		user = 'guest' + clientlist.length
+		user = 'guest' + clients.list.length
 		# The above isn't the greatest numberic assignment, this should keep us
 		# from getting repeat guestIDs (I would like to replace this code).
-		for c in clientlist
+		for c in clients.list
 			if c.name is user
-				user = 'guest0' + clientlist.length
+				user = 'guest0' + clients.list.length
 
 		# Set the name in the client object for later reference and log connect.
 		client.name = user

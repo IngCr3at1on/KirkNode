@@ -1,6 +1,7 @@
 #
 # Handle client and channel lists.
 #
+clients = require './clients'
 
 #
 # Each channel is built of a name and an array of members.
@@ -62,6 +63,25 @@ clientHandler=
 		ret = '{"response": 200}'
 		console.log 'server: ' + ret
 		client.stream.write ret
+
+	# Handle a private message, relaying it only to the recipient.
+	handleprivmsg: (client, dest, json) ->
+		# Check our client list for the destination.
+		for c in clients.list
+			# If the client matches are destination, pass the original JSON
+			# object (unchanged).
+			if c.name is dest
+				c.stream.write json
+				# And return success to the sending client.
+				ret = '{"response": 200, "alert": "Private message sent."}'
+				console.log 'server: ' + ret
+				client.stream.write ret
+
+			# Otherwise return 404 : Not Found.
+			else
+				ret = '{"response": 404}'
+				console.log 'server: '+ ret
+				client.stream.write ret
 
 	# Handle a room message relaying it to all members of the room.
 	handleroommsg: (client, room, json) ->
