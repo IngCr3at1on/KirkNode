@@ -19,7 +19,7 @@ installed on the system.
 Todo:
 
 	Add authentiation.
-	Add secure messaing.
+	Add secure messaging.
 
 
 License:
