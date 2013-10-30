@@ -18,7 +18,7 @@ installed on the system.
 
 Todo:
 
-	Add authentiation.
+	Add authentication.
 	Add secure messaging.
 
 
