@@ -29,6 +29,7 @@
 # 'json' will be the json object containing the action to be processed.
 # 'obj' is a converted json object which we can grab our key-pairs from.
 #
+authHandler = require './authHandler'
 clientHandler = require './clientHandler'
 
 jimHandler =
@@ -69,9 +70,7 @@ jimHandler =
 	# Authenticate a user on the server.
 	#
 	authenticate: (client, obj) ->
-		ret = '{"response": 100, "alert": "Authentication is not enabled at this time."}'
-		console.log 'server: ' + ret
-		client.stream.write ret
+		authHandler.authenticate(client, obj)
 
 	#
 	# Log a user into a channel.
