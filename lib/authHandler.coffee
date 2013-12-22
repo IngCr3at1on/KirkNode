@@ -27,12 +27,12 @@
 #
 mongo = require 'mongodb'
 server = new mongo.Server '127.0.0.1', 27017, {}
-mongo = new mongo.Db 'kirkauth', server
+base = new mongo.Db 'kirkauth', server
 
 collection = 'kirkauth'
 
 authHandler =
 	authenticate: (client, obj) ->
-		mongo.collection.find()
+		base.collection.find()
 
 module.exports = authHandler
