@@ -26,29 +26,31 @@
 # Global logging system for KirkNode.
 #
 
+DEBUG = 0
+LOGFILE = './logs/log'
+ERRFILE = './logs/err'
+
 kLog =
 	#
-	# Print log to console only.
+	# Print a log and if debugging is enabled log it to a file.
 	#
 	print: (data) ->
-		console.log 'server: '+data
+		ret = 'server: '+data
+		if DEBUG is 1
+			# Not enabled yet
+			console.log ret
+		else
+			console.log ret
 
 	#
-	# Print log to console and log to file (not implemented yet).
-	#
-	#file: (data, file) ->
-	#	console.log data
-
-	#
-	# Print error to console only.
+	# Print error to console and if debugging is enabled log it to a file.
 	#
 	err: (data) ->
-		console.log 'err: '+data
-
-	#
-	# Print error to console and lot to file (not implemented yet).
-	#
-	#ferr: (data, file) ->
-	#	console.log data
+		ret = 'err: '+data
+		if DEBUG is 1
+			# Not enabled yet
+			console.log ret
+		else
+			console.log ret
 
 module.exports = kLog
