@@ -23,21 +23,32 @@
 ################################################################################
 
 #
-# Initiate our server and send all stream data to KirkNode.
-#
-KirkNode = require './lib/KirkNode'
-kLog = require './lib/kLog'
-net = require 'net'
-
-# TODO
-#   Add port range.
-#   Add IP check and black list.
+# Global logging system for KirkNode.
 #
 
-PORT = 4004
+kLog =
+	#
+	# Print log to console only.
+	#
+	print: (data) ->
+		console.log 'server: '+data
 
-server = net.createServer (stream) ->
-	KirkNode.init stream
+	#
+	# Print log to console and log to file (not implemented yet).
+	#
+	#file: (data, file) ->
+	#	console.log data
 
-server.listen PORT, ->
-	kLog.print 'bound on port '+PORT
+	#
+	# Print error to console only.
+	#
+	err: (data) ->
+		console.log 'err: '+data
+
+	#
+	# Print error to console and lot to file (not implemented yet).
+	#
+	#ferr: (data, file) ->
+	#	console.log data
+
+module.exports = kLog

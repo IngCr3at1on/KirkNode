@@ -26,6 +26,7 @@
 # Handle client and channel lists.
 #
 clients = require './clients'
+kLog = require './kLog'
 
 #
 # Each channel is built of a name and an array of members.
@@ -61,7 +62,7 @@ clientHandler=
 		chanlist[room].members.push client
 		client.chans.push room
 		ret = '{"response": 200}'
-		console.log 'server: ' + ret
+		kLog.print ret
 		client.stream.write ret
 
 	# Leave / exit a channel (callback is used by quit).
@@ -74,7 +75,7 @@ clientHandler=
 				return
 
 			ret = '{"response": 404}'
-			console.log 'server: '+ ret
+			kLog.print ret
 			client.stream.write ret
 			return
 
@@ -85,7 +86,7 @@ clientHandler=
 			return
 
 		ret = '{"response": 200}'
-		console.log 'server: ' + ret
+		kLog.print ret
 		client.stream.write ret
 
 	# Handle a private message, relaying it only to the recipient.
@@ -98,13 +99,13 @@ clientHandler=
 				c.stream.write json
 				# And return success to the sending client.
 				ret = '{"response": 200, "alert": "Private message sent."}'
-				console.log 'server: ' + ret
+				kLog.print ret
 				client.stream.write ret
 
 			# Otherwise return 404 : Not Found.
 			else
 				ret = '{"response": 404}'
-				console.log 'server: '+ ret
+				kLog.print ret
 				client.stream.write ret
 
 	# Handle a room message relaying it to all members of the room.
@@ -112,7 +113,7 @@ clientHandler=
 		# If the destination channel doesn't exist return 404 : Not Found.
 		if !chanlist[room]
 			ret = '{"response": 404}'
-			console.log 'server: '+ ret
+			kLog.print ret
 			client.stream.write ret
 			return
 
@@ -122,7 +123,7 @@ clientHandler=
 
 		# Return success to the sending client.
 		ret = '{"response": 200, "alert": "Multi-user message published."}'
-		console.log 'server: ' + ret
+		kLog.print ret
 		client.stream.write ret
 
 module.exports = clientHandler

@@ -31,6 +31,7 @@
 #
 authHandler = require './authHandler'
 clientHandler = require './clientHandler'
+kLog = require './kLog'
 
 jimHandler =
 	#
@@ -56,14 +57,14 @@ jimHandler =
 					# Invalid action, return bad request.
 					else
 						ret = '{"response": 400, "error": "Bad request."}'
-						console.log 'server: ' + ret
+						kLog.print ret
 						client.stream.write ret
 
 		# Otherwise there is no action or the JSON object is malformed,
 		# return bad json.
 		else
 			ret = '{"response": 400, "error": "Bad json object."}'
-			console.log 'server: ' + ret
+			kLog.print ret
 			client.stream.write ret
 
 	#
@@ -81,7 +82,7 @@ jimHandler =
 			# Confirm the Channel title includes a '#' character and error if not.
 			if obj.room.charAt(0) is not '#'
 				ret = '{"response": 400, "error": "Channel/room title must be prefixed with '#'"}'
-				console.log 'server: ' + ret
+				kLog.print ret
 				client.stream.write ret
 
 			# Otherwise go ahead and process our join command
@@ -92,7 +93,7 @@ jimHandler =
 		# return bad json.
 		else
 			ret = '{"response": 400, "error": "Bad or missing room name."}'
-			console.log 'server: ' + ret
+			kLog.print ret
 			client.stream.write ret
 
 	#
@@ -104,7 +105,7 @@ jimHandler =
 			# Confirm the Channel title includes a '#' character and error if not.
 			if obj.room.charAt(0) is not '#'
 				ret = '{"response": 400, "error": "Channel/room title must be prefixed with '#'"}'
-				console.log 'server: ' + ret
+				kLog.print ret
 				client.stream.write ret
 
 			# Otherwise go ahead and process our part command
@@ -115,7 +116,7 @@ jimHandler =
 		# return bad json.
 		else
 			ret = '{"response": 400, "error": "Bad or missing room name."}'
-			console.log 'server: ' + ret
+			kLog.print ret
 			client.stream.write ret
 
 	#
@@ -135,7 +136,7 @@ jimHandler =
 		# return bad json.
 		else
 			ret = '{"response": 400, "error": "Bad or missing recipient."}'
-			console.log 'server: ' + ret
+			kLog.print ret
 			client.stream.write ret
 
 	#

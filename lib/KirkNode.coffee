@@ -28,6 +28,7 @@
 clients = require './clients'
 clientHandler = require './clientHandler'
 jimHandler = require './jimHandler'
+kLog = require './kLog'
 
 # 500 characters is less then 7 lines at 80 characters per line.
 # Assuming the opening bracket comes in on 1 line, then each entry pair on the
@@ -85,7 +86,7 @@ KirkNode =
 
 		# Set the name in the client object for later reference and log connect.
 		client.name = user
-		console.log client.name + ' connected'
+		kLog.print client.name + ' connected'
 		# Send ack to client to confirm connect.
 		stream.write '{"response": 200}'
 
@@ -95,7 +96,7 @@ KirkNode =
 			for c in client.chans
 				clientHandler.partchan client, c, false
 
-			console.log client.name + ' disconnected'
+			kLog.print client.name + ' disconeccted'
 
 		# Receive data and assemble a json object.
 		stream.on 'data', (json) ->
@@ -129,7 +130,7 @@ KirkNode =
 						# We've passed the max line size for a JIM JSON object
 						# so return bad json
 						ret = '{"response": 400, "error": "Bad json object."}'
-						console.log 'server: ' + ret
+						kLog.print ret
 						client.stream.write ret
 						obj = undefined
 						client.i = 0
@@ -147,7 +148,7 @@ KirkNode =
 
 	# Log a JSON object to console before sending it to the jimHandler.
 	ReviewJson: (client, json) ->
-		console.log client.name + ': ' + json.toString()
+		kLog.print client.name + ': ' + json.toString()
 		jimHandler.review client, json
 
 module.exports = KirkNode
