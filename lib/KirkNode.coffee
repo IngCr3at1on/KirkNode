@@ -38,9 +38,14 @@ JSONLIMIT = 14
 
 #
 # Each client gets created with several variables.
+# (I would like to include this in clientHandler but doing so breaks things,
+# more specifically creating a client by calling clientHandler seems to break
+# stream recognition for each client causing them to come up as undefined).
 #
 class Client
 	constructor: (stream) ->
+		# Unique 8bit ID for all users
+		@id = 0o00000000
 		# Individual data stream
 		@stream = stream
 		# We build an object from multiple lines from the stream until we either
@@ -76,16 +81,19 @@ KirkNode =
 		client = new Client(stream)
 		clients.list.push client
 
-		# Give each client a guestID on login (changed on authorization).
-		user = 'guest' + clients.list.length
-		# The above isn't the greatest numberic assignment, this should keep us
-		# from getting repeat guestIDs (I would like to replace this code).
+		# Assign all clients a unique 8bit ID for server reference, this will
+		# not change while the client is connected regardless of name change.
+		id = 0o00000001
 		for c in clients.list
-			if c.name is user
-				user = 'guest0' + clients.list.length
+			if c.id is id
+				id = ++id
 
-		# Set the name in the client object for later reference and log connect.
-		client.name = user
+		client.id = id
+
+		# Give each client a guestID on login (changed on authorization).
+		# id will be truncated upon connect.
+		client.name = 'guest'+id
+
 		kLog.print client.name + ' connected'
 		# Send ack to client to confirm connect.
 		stream.write '{"response": 200}'

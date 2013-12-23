@@ -71,7 +71,7 @@ jimHandler =
 	# Authenticate a user on the server.
 	#
 	authenticate: (client, obj) ->
-		authHandler.authenticate(client, obj)
+		authHandler.authenticate client, obj
 
 	#
 	# Log a user into a channel.
