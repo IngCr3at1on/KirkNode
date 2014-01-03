@@ -25,7 +25,7 @@
 #
 # Handle client login/logout and process received messages (json objects).
 #
-clients = require './clients'
+lists = require './lists'
 clientHandler = require './clientHandler'
 jimHandler = require './jimHandler'
 kLog = require './kLog'
@@ -79,14 +79,13 @@ KirkNode =
 	init: (stream) ->
 		# Create a new client and add them to the clients list
 		client = new Client(stream)
-		clients.list.push client
+		lists.client.push client
 
 		# Assign all clients a unique 8bit ID for server reference, this will
 		# not change while the client is connected regardless of name change.
 		id = 0o00000001
-		for c in clients.list
-			if c.id is id
-				id = ++id
+		for c in lists.client when c.id is id
+			id = ++id
 
 		client.id = id
 

@@ -25,7 +25,7 @@
 #
 # Handle client and channel lists.
 #
-clients = require './clients'
+lists = require './lists'
 kLog = require './kLog'
 
 #
@@ -46,20 +46,15 @@ Array.prototype.remove = (element) ->
 		return this.splice(i, 1)
 
 #
-# List all current channels.
-#
-chanlist = new Object()
-
-#
 # Handle client/channel functions (joining, parting).
 #
 clientHandler=
 	# Join a channel creating it if it does not exist.
 	joinchan: (client, room) ->
-		if !chanlist[room]
-			chanlist[room] = new Channel(room)
+		if !lists.chan[room]
+			lists.chan[room] = new Channel(room)
 		
-		chanlist[room].members.push client
+		lists.chan[room].members.push client
 		client.chans.push room
 		ret = '{"response": 200}'
 		kLog.print ret
@@ -68,7 +63,7 @@ clientHandler=
 	# Leave / exit a channel (callback is used by quit).
 	partchan: (client, room, callback) ->
 		# If the channel doesn't exist return 404 : Not Found.
-		if !chanlist[room]
+		if !lists.chan[room]
 			# If there's no callback don't even error as the client will be
 			# gone anyway.
 			if !callback
@@ -79,7 +74,7 @@ clientHandler=
 			client.stream.write ret
 			return
 
-		chanlist[room].members.remove client
+		lists.chan[room].members.remove client
 		client.chans.remove room
 
 		if !callback
@@ -92,7 +87,7 @@ clientHandler=
 	# Handle a private message, relaying it only to the recipient.
 	handleprivmsg: (client, dest, json) ->
 		# Check our client list for the destination.
-		for c in clients.list
+		for c in list.client
 			# If the client matches are destination, pass the original JSON
 			# object (unchanged).
 			if c.name is dest
@@ -111,14 +106,14 @@ clientHandler=
 	# Handle a room message relaying it to all members of the room.
 	handleroommsg: (client, room, json) ->
 		# If the destination channel doesn't exist return 404 : Not Found.
-		if !chanlist[room]
+		if !lists.chan[room]
 			ret = '{"response": 404}'
 			kLog.print ret
 			client.stream.write ret
 			return
 
 		# Otherwise pass the original json object (unmodified) to each member.
-		for m in chanlist[room].members
+		for m in lists.chan[room].members
 			m.stream.write json
 
 		# Return success to the sending client.
