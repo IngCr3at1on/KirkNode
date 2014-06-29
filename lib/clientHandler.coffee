@@ -57,7 +57,7 @@ clientHandler=
 		
 		lists.chan[room].members.push client
 		client.chans.push room
-		kResponse.send '{"response": 200}'
+		kResponse.send client '{"response": 200}'
 
 	# Leave / exit a channel (callback is used by quit).
 	partchan: (client, room, callback) ->
@@ -68,7 +68,7 @@ clientHandler=
 			if !callback
 				return
 
-			kResponse.send '{"response": 404}'
+			kResponse.send client '{"response": 404}'
 			return
 
 		lists.chan[room].members.remove client
@@ -77,7 +77,7 @@ clientHandler=
 		if !callback
 			return
 
-		kResponse.send '{"response": 200}'
+		kResponse.send client '{"response": 200}'
 
 	# Handle a private message, relaying it only to the recipient.
 	handleprivmsg: (client, dest, json) ->
@@ -88,17 +88,17 @@ clientHandler=
 			if c.name is dest
 				c.stream.write json
 				# And return success to the sending client.
-				kResponse.send '{"response": 200, "alert": "Private message sent."}'
+				kResponse.send client '{"response": 200, "alert": "Private message sent."}'
 
 			# Otherwise return 404 : Not Found.
 			else
-				kResponse.send '{"response": 404}'
+				kResponse.send client '{"response": 404}'
 
 	# Handle a room message relaying it to all members of the room.
 	handleroommsg: (client, room, json) ->
 		# If the destination channel doesn't exist return 404 : Not Found.
 		if !lists.chan[room]
-			kResponse.send '{"response": 404}'
+			kResponse.send client '{"response": 404}'
 			return
 
 		# Otherwise pass the original json object (unmodified) to each member.
@@ -106,6 +106,6 @@ clientHandler=
 			m.stream.write json
 
 		# Return success to the sending client.
-		kResponse.send '{"response": 200, "alert": "Multi-user message published."}'
+		kResponse.send client '{"response": 200, "alert": "Multi-user message published."}'
 
 module.exports = clientHandler

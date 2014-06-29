@@ -137,7 +137,7 @@ KirkNode =
 					else if client.i is JSONLIMIT
 						# We've passed the max line size for a JIM JSON object
 						# so return bad json
-						kResponse.send '{"response": 400, "error": "Bad json object."}'
+						kResponse.send client '{"response": 400, "error": "Bad json object."}'
 						obj = undefined
 						client.i = 0
 

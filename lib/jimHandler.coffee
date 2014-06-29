@@ -72,7 +72,7 @@ jimHandler =
 		# Otherwise there is no action or the JSON object is malformed,
 		# return bad json.
 		else
-			kResponse.send '{"response": 400, "error": "Bad json object."}'
+			kResponse.send client '{"response": 400, "error": "Bad json object."}'
 
 	##
 	## Internal/private functions, should not be called from other
@@ -97,7 +97,7 @@ jimHandler =
 		if obj.room and typeof obj.room is 'string'
 			# Confirm the Channel title includes a '#' character and error if not.
 			if obj.room.charAt(0) is not '#'
-				kResponse.send '{"response": 400, "error": "Channel/room title must be prefixed with '#'"}'
+				kResponse.send client '{"response": 400, "error": "Channel/room title must be prefixed with '#'"}'
 
 			# Otherwise go ahead and process our join command
 			else
@@ -106,7 +106,7 @@ jimHandler =
 		# If no 'room' field is given (or if our 'room' field is not a string)
 		# return bad json.
 		else
-			kResponse.send '{"response": 400, "error": "Bad or missing room name."}'
+			kResponse.send client '{"response": 400, "error": "Bad or missing room name."}'
 
 	#
 	# Log a user out of a channel.
@@ -116,7 +116,7 @@ jimHandler =
 		if obj.room and typeof obj.room is 'string'
 			# Confirm the Channel title includes a '#' character and error if not.
 			if obj.room.charAt(0) is not '#'
-				kResponse.send '{"response": 400, "error": "Channel/room title must be prefixed with '#'"}'
+				kResponse.send client '{"response": 400, "error": "Channel/room title must be prefixed with '#'"}'
 
 			# Otherwise go ahead and process our part command
 			else
@@ -125,7 +125,7 @@ jimHandler =
 		# If no 'room' field is given (or if our 'room' field is not a string)
 		# return bad json.
 		else
-			kReponse.send '{"response": 400, "error": "Bad or missing room name."}'
+			kReponse.send client '{"response": 400, "error": "Bad or missing room name."}'
 
 	#
 	# Message a user or group (that the user/client is logged into)
@@ -143,7 +143,7 @@ jimHandler =
 		# If no 'to' field is given (or if our 'to' field is not a string)
 		# return bad json.
 		else
-			kResponse.send '{"response": 400, "error": "Bad or missing recipient."}'
+			kResponse.send client '{"response": 400, "error": "Bad or missing recipient."}'
 
 	#
 	# Quit / Log a client out of the server
@@ -195,6 +195,6 @@ jimHandler =
 		alert = "'Channels:'+chans+'Users:'+users'"
 		# This is information being returned from the server to the client, use
 		# response code 100 and a standard alert for this.
-		kResponse.send '{"response": 100, "alert": alert}'
+		kResponse.send client '{"response": 100, "alert": alert}'
 
 module.exports = jimHandler
