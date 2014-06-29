@@ -29,6 +29,7 @@ lists = require './lists'
 clientHandler = require './clientHandler'
 jimHandler = require './jimHandler'
 kLog = require './kLog'
+kResponse = require './kResponse'
 
 # 500 characters is less then 7 lines at 80 characters per line.
 # Assuming the opening bracket comes in on 1 line, then each entry pair on the
@@ -136,9 +137,7 @@ KirkNode =
 					else if client.i is JSONLIMIT
 						# We've passed the max line size for a JIM JSON object
 						# so return bad json
-						ret = '{"response": 400, "error": "Bad json object."}'
-						kLog.print ret
-						client.stream.write ret
+						kResponse.send '{"response": 400, "error": "Bad json object."}'
 						obj = undefined
 						client.i = 0
 

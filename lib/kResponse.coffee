@@ -23,21 +23,13 @@
 ################################################################################
 
 #
-# Initiate our server and send all stream data to KirkNode.
-#
-KirkNode = require './lib/KirkNode'
-kLog = require './lib/kLog'
-net = require 'net'
-
-# TODO
-#   Add port range.
-#   Add IP check and black list.
+# Handle all responses and send everything to kLog (kirkLog)
 #
 
-PORT = 4004
+kLog = require './kLog'
 
-server = net.createServer (stream) ->
-	KirkNode.init stream
+exports.kResponse=
+	send: (client, msg) ->
+		kLog.print msg
+		client.stream.write msg
 
-server.listen PORT, ->
-	kLog.print 'bound on port '+PORT

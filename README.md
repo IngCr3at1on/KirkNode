@@ -20,7 +20,6 @@ Todo:
 
 	Add authentication.
 	Add secure messaging.
-	Reduce repeat code by writing a callback function for sending response codes.
 	Redude repeat code by moving 'Array.prototype.remove' somewhere more accessible.
 
 License:

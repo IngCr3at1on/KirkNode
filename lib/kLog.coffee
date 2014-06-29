@@ -23,7 +23,7 @@
 ################################################################################
 
 #
-# Global logging system for KirkNode.
+# Global logging system for KirkNode (kirkLog).
 #
 
 DEBUG = 0
