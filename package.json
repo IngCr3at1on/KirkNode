@@ -1,0 +1,9 @@
+{
+  "name": "KirkNode",
+  "description": "JIM chat server",
+  "version": "0.0.2",
+  "private": true,
+  "scripts": {
+    "start": "node init.js"
+  }
+}
