@@ -21,6 +21,7 @@ ToDo:
 	Add authentication.
 	Add secure messaging.
 	Reduce repeat code by moving 'Array.prototype.remove' somewhere more accessible.
+	Better ID tracking for guest user assignment.
 
 License:
 
